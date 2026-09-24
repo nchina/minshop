@@ -1,0 +1,73 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "minshop",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-07-20",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"triggers": {
+		"crons": [
+			"*/5 * * * *"
+		]
+	},
+	"observability": {
+		"enabled": true,
+		"traces": {
+			"enabled": true,
+			"head_sampling_rate": 1
+		}
+	},
+	"cache": {
+		"enabled": false
+	},
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "b00d363a70504b5ead41948c9986abf4"
+		}
+	],
+	"ratelimits": [
+		{
+			"name": "AUTH_RATE_LIMITER",
+			"namespace_id": "10001",
+			"simple": {
+				"limit": 10,
+				"period": 60
+			}
+		},
+		{
+			"name": "CHECKOUT_RATE_LIMITER",
+			"namespace_id": "10002",
+			"simple": {
+				"limit": 20,
+				"period": 60
+			}
+		},
+		{
+			"name": "SEARCH_RATE_LIMITER",
+			"namespace_id": "10003",
+			"simple": {
+				"limit": 60,
+				"period": 60
+			}
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "minshop-db",
+			"migrations_dir": "migrations"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "BUCKET",
+			"bucket_name": "minshop-images"
+		},
+		{
+			"binding": "FILES",
+			"bucket_name": "minshop-files"
+		}
+	]
+}
